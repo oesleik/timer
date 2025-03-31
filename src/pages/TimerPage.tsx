@@ -110,25 +110,26 @@ const StepTimer = ({ step, onFinished, roundsState }: {
 
 	const formatedTime = formatTime(parsedTime, step.timeFormat);
 	const timerFontSizeClass = formatedTime.length > 5 ? "text-15xl" : "text-18xl";
+	const timerColorScheme = "timer-color-scheme-" + (roundsState.isFinished ? "finished" : step.colorScheme.toLowerCase());
 
 	return <>
-		<div className="border-echo-yellow-500 border-6 rounded-full timer-circle flex flex-col items-center justify-center h-full">
+		<div className={`${timerColorScheme} border-6 rounded-full timer-circle flex flex-col items-center justify-center h-full`}>
 			{!step.description && roundsState.showRounds ? (
-				<>
+				<div className="timer-step-rounds">
 					<div className="text-7xl text-center font-light">
 						{roundsState.currentRound}/{roundsState.maxRounds}
 					</div>
 					<div className="text-2xl text-center uppercase tracking-widest font-semibold">
 						Rounds
 					</div>
-				</>
+				</div>
 			) : (
-				<div className="text-8xl text-center mb-2">
+				<div className="text-8xl text-center mb-2 timer-step-description">
 					{step.description}
 				</div>
 			)}
-			<strong className={`${timerFontSizeClass} font-normal mb-18`}>
-				{ formatedTime }
+			<strong className={`${timerFontSizeClass} font-normal mb-18 timer-step-time`}>
+				{formatedTime}
 			</strong>
 			<div>
 				<TimerActions timer={timer} />
@@ -141,10 +142,10 @@ const Button = ({ className, children, ...props }: PropsWithChildren<ButtonHTMLA
 	return <>
 		<button
 			type="button"
-			className={["bg-echo-gray-500 px-6 py-2 cursor-pointer rounded-lg", className].join(" ")}
+			className={["bg-echo-gray-500 px-6 py-2 cursor-pointer rounded-lg text-echo-white-500", className].join(" ")}
 			{...props}
 		>
-			{ children }
+			{children}
 		</button>
 	</>;
 };

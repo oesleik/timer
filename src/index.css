@@ -28,6 +28,48 @@
 	line-height: 1;
 }
 
+/* NORMAL", "PREPARATION", "REST", "FINISHED */
+
+.timer-color-scheme-normal {
+	border-color: #D32F2F;
+	color: #FFF;
+}
+
+.timer-color-scheme-preparation {
+	color: #FFD130;
+}
+
+.timer-color-scheme-rest {
+	color: #00BCD4;
+}
+
+.timer-color-scheme-finished {
+	border-color: #D32F2F;
+	color: #FFF;
+}
+
+.timer-color-scheme-finished .timer-step-time {
+	animation: blink-animation 1s infinite;
+}
+
+@keyframes blink-animation {
+	0% {
+	  opacity: 1;
+	}
+	60% {
+	  opacity: 1;
+	}
+	70% {
+	  opacity: 0;
+	}
+	90% {
+	  opacity: 0;
+	}
+	100% {
+	  opacity: 1;
+	}
+  }
+
 /* :root {
 	font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
 	line-height: 1.5;

@@ -69,7 +69,7 @@ const parseRouteSettings = (mode: ModeSettings, params: FormData): ParsedRoundSe
 				duration,
 				direction: valueShouldBeOneOf(replaceConfigWithParam(step.direction, params, mode.customParams), ValidTimerDirections) || "DESC",
 				description: replaceStringWithParam(step.description, params) || "",
-				colorScheme: valueShouldBeOneOf(replaceConfigWithParam(step.direction, params, mode.customParams), ValidColorSchemes) || "NORMAL",
+				colorScheme: valueShouldBeOneOf(replaceConfigWithParam(step.colorScheme, params, mode.customParams), ValidColorSchemes) || "NORMAL",
 				onlyFirstRound: step.onlyFirstRound === true,
 				hideLastRound: step.hideLastRound === true,
 				timeFormat: step.timeFormat || guessTimeFormat(duration),
