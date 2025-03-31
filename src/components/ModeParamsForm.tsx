@@ -80,19 +80,15 @@ const parseRouteSettings = (mode: ModeSettings, params: FormData): ParsedRoundSe
 
 const guessTimeFormat = (duration: ParsedRoundSettings["roundSteps"][0]["duration"]): TimeFormat => {
 	if (typeof duration !== "number") {
-		return "H:MM:SS";
+		return "MM:SS";
 	}
 
 	if (duration >= 60 * 60) {
 		return "H:MM:SS";
 	}
 
-	if (duration >= 30) {
+	if (duration > 60) {
 		return "MM:SS"
-	}
-
-	if (duration >= 10) {
-		return "SS"
 	}
 
 	return "S";
@@ -179,21 +175,23 @@ const CustomParamInput = ({ param, value, setValue }: {
 
 	if (param.inputType === "options") {
 		return <>
-			<label className="block text-echo-white-500 text-sm font-bold mb-2">
-				{param.description}
-			</label>
-			{param.options.map((option, idx) => (
-				<label key={idx} className="flex items-center">
-					<input
-						type="radio"
-						value={option.value}
-						checked={value === option.value}
-						onChange={event => setValue(event.target.value)}
-						className="mr-2"
-					/>
-					{option.label}
+			<div className="mb-6">
+				<label className="block text-echo-white-500 text-sm font-bold mb-2">
+					{param.description}
 				</label>
-			))}
+				{param.options.map((option, idx) => (
+					<label key={idx} className="flex items-center">
+						<input
+							type="radio"
+							value={option.value}
+							checked={value === option.value}
+							onChange={event => setValue(event.target.value)}
+							className="mr-2"
+						/>
+						{option.label}
+					</label>
+				))}
+			</div>
 		</>;
 	}
 
