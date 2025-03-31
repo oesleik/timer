@@ -137,7 +137,7 @@ export const ModeParamsForm = ({
 	}
 
 	return <>
-		<form onSubmit={() => {}} className="text-2xl">
+		<form onSubmit={() => { }} className="text-2xl">
 			{Object.entries(customParams).map(([ref, param]) => (
 				<CustomParamInput
 					key={ref}
@@ -164,9 +164,7 @@ const CustomParamInput = ({ param, value, setValue }: {
 }) => {
 	if (param.inputType === "number") {
 		return <>
-			<label
-				className="block text-echo-white-500 text-sm font-bold mb-2"
-			>
+			<label className="block text-echo-white-500 text-sm font-bold mb-2">
 				{param.description}
 			</label>
 			<input
@@ -176,6 +174,26 @@ const CustomParamInput = ({ param, value, setValue }: {
 				onChange={event => setValue(event.target.value)}
 				className="shadow appearance-none border rounded w-full py-2 px-3 mb-6 text-echo-white-500 leading-tight focus:outline-none focus:shadow-outline"
 			/>
+		</>;
+	}
+
+	if (param.inputType === "options") {
+		return <>
+			<label className="block text-echo-white-500 text-sm font-bold mb-2">
+				{param.description}
+			</label>
+			{param.options.map((option, idx) => (
+				<label key={idx} className="flex items-center">
+					<input
+						type="radio"
+						value={option.value}
+						checked={value === option.value}
+						onChange={event => setValue(event.target.value)}
+						className="mr-2"
+					/>
+					{option.label}
+				</label>
+			))}
 		</>;
 	}
 

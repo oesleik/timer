@@ -53,10 +53,10 @@ type CustomNumberParam = {
 	parseValue?: (value: number) => number,
 };
 
-type CustomOptionsParam = {
+type CustomOptionsParam<T extends string = string> = {
 	inputType: "options",
-	options: string[],
-	defaultValue: string,
+	options: { value: T, label: string }[],
+	defaultValue: T,
 };
 
 export type CustomParamReplacement = `__${string}__`;
@@ -71,7 +71,7 @@ export const COLOR_SCHEME_MAP: Record<ColorScheme, string> = {
 } as const;
 
 const PREPARATION_STEP: RoundStepSettings = {
-	duration: 5,
+	duration: 10,
 	direction: "DESC",
 	description: "Preparation",
 	colorScheme: "PREPARATION",
@@ -101,7 +101,7 @@ const DEFAULT_SETTINGS: Record<string, ModeSettings> = {
 			rounds: 0,
 			roundSteps: [
 				PREPARATION_STEP,
-				{ duration: "__duration__", description: "AMRAP __duration__'" }
+				{ duration: "__duration__", description: "AMRAP __duration__'", direction: "__direction__" }
 			]
 		},
 		customParams: {
@@ -111,6 +111,15 @@ const DEFAULT_SETTINGS: Record<string, ModeSettings> = {
 				defaultValue: 15,
 				parseValue: value => value * 60,
 			},
+			"direction": {
+				description: "Timer direction",
+				inputType: "options",
+				options: [
+					{ value: "DESC", label: "Descending" },
+					{ value: "ASC", label: "Ascending" },
+				],
+				defaultValue: "DESC",
+			} satisfies CustomParamSettings & CustomOptionsParam<TimerDirection>,
 		}
 	},
 	TABATA: {
