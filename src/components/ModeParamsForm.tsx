@@ -74,6 +74,8 @@ const parseRouteSettings = (mode: ModeSettings, params: FormData): ParsedRoundSe
 				hideLastRound: step.hideLastRound === true,
 				timeFormat: step.timeFormat || guessTimeFormat(duration),
 			};
+		}).filter(step => {
+			return step.duration === NO_LIMIT || step.duration > 0;
 		}),
 	};
 };
