@@ -83,6 +83,7 @@ const REST_STEP: Partial<RoundStepSettings> = {
 	description: "Rest",
 	colorScheme: "REST",
 	hideLastRound: true,
+	timeFormat: "S"
 } as const;
 
 const DEFAULT_SETTINGS: Record<string, ModeSettings> = {
@@ -158,7 +159,8 @@ const DEFAULT_SETTINGS: Record<string, ModeSettings> = {
 			rounds: "__rounds__",
 			roundSteps: [
 				PREPARATION_STEP,
-				{ duration: 60, timeFormat: "SS" }
+				{ duration: "__duration__" },
+				{ ...REST_STEP, duration: "__rest_duration__" }
 			]
 		},
 		customParams: {
@@ -166,6 +168,16 @@ const DEFAULT_SETTINGS: Record<string, ModeSettings> = {
 				description: "Rounds",
 				inputType: "number",
 				defaultValue: 8,
+			},
+			"duration": {
+				description: "Duration (seconds)",
+				inputType: "number",
+				defaultValue: 60,
+			},
+			"rest_duration": {
+				description: "Rest (seconds)",
+				inputType: "number",
+				defaultValue: 0,
 			},
 		}
 	},
@@ -176,7 +188,7 @@ const DEFAULT_SETTINGS: Record<string, ModeSettings> = {
 			rounds: 0,
 			roundSteps: [
 				PREPARATION_STEP,
-				{ duration: "__duration__", direction: "ASC" }
+				{ duration: "__duration__", direction: "__direction__" }
 			]
 		},
 		customParams: {
@@ -186,6 +198,15 @@ const DEFAULT_SETTINGS: Record<string, ModeSettings> = {
 				defaultValue: 120,
 				parseValue: value => value * 60,
 			},
+			"direction": {
+				description: "Timer direction",
+				inputType: "options",
+				options: [
+					{ value: "DESC", label: "Descending" },
+					{ value: "ASC", label: "Ascending" },
+				],
+				defaultValue: "ASC",
+			} satisfies CustomParamSettings & CustomOptionsParam<TimerDirection>,
 		}
 	}
 } as const;
