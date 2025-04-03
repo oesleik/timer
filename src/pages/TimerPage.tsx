@@ -3,6 +3,7 @@ import { TimerState, useSecondsTimer } from "../hooks/useSecondsTimer";
 import { useNavigate } from "react-router";
 import { ModeSettings, ParsedRoundSettings, TimeFormat } from "../hooks/useModeSettings";
 import { ModeParamsForm } from "../components/ModeParamsForm";
+import { CircularProgress } from "./CircularProgress";
 
 type RoundsState = {
 	currentRound: number,
@@ -100,6 +101,7 @@ const StepTimer = ({ step, onFinished, roundsState }: {
 	}
 
 	const timer = useSecondsTimer({ maxDuration, autoStart });
+	const progress = (!maxDuration ? 100 : (timer.time * 100) / (maxDuration - 1)) / 100;
 	const parsedTime = step.direction === "DESC" ? Math.max(0, Number(maxDuration) - timer.time) : timer.time;
 
 	useEffect(() => {
@@ -112,26 +114,30 @@ const StepTimer = ({ step, onFinished, roundsState }: {
 	const timerFontSizeClass = formatedTime.length > 5 ? "text-15xl" : "text-18xl";
 	const timerColorScheme = "timer-color-scheme-" + (roundsState.isFinished ? "finished" : step.colorScheme.toLowerCase());
 
+
 	return <>
-		<div className={`${timerColorScheme} border-6 rounded-full timer-circle flex flex-col items-center justify-center h-full`}>
-			{!step.description && roundsState.showRounds ? (
-				<div className="timer-step-rounds">
-					<div className="text-7xl text-center font-light">
-						{roundsState.currentRound}/{roundsState.maxRounds}
+		<div className={`${timerColorScheme} relative timer-circle h-full`}>
+			<div className="absolute h-full mx-auto pointer-events-none">
+				<CircularProgress progress={progress} />
+			</div>
+			<div className="flex flex-col items-center justify-center h-full text-center">
+				{!step.description && roundsState.showRounds ? (
+					<div className="timer-step-rounds">
+						<div className="text-7xl font-light">
+							{roundsState.currentRound}/{roundsState.maxRounds}
+						</div>
+						<div className="text-2xl uppercase tracking-widest font-semibold">
+							Rounds
+						</div>
 					</div>
-					<div className="text-2xl text-center uppercase tracking-widest font-semibold">
-						Rounds
+				) : (
+					<div className="text-8xl mb-2 timer-step-description">
+						{step.description}
 					</div>
-				</div>
-			) : (
-				<div className="text-8xl text-center mb-2 timer-step-description">
-					{step.description}
-				</div>
-			)}
-			<strong className={`${timerFontSizeClass} font-normal mb-18 timer-step-time`}>
-				{formatedTime}
-			</strong>
-			<div>
+				)}
+				<strong className={`${timerFontSizeClass} font-normal mb-18 timer-step-time`}>
+					{formatedTime}
+				</strong>
 				<TimerActions timer={timer} />
 			</div>
 		</div>
@@ -142,7 +148,7 @@ const Button = ({ className, children, ...props }: PropsWithChildren<ButtonHTMLA
 	return <>
 		<button
 			type="button"
-			className={["bg-echo-gray-500 px-6 py-2 cursor-pointer rounded-lg text-echo-white-500", className].join(" ")}
+			className={["bg-echo-gray-500 px-6 py-2 cursor-pointer rounded-lg text-echo-white-500 border-echo-gray-500 border-2 focus:border-echo-white-500 hover:border-echo-white-500", className].join(" ")}
 			{...props}
 		>
 			{children}

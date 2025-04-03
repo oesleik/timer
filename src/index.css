@@ -1,21 +1,33 @@
 @import "tailwindcss";
 
-@theme {
-	--color-echo-yellow-500: #FFD130;
-	--color-echo-gray-500: #393738;
-	--color-echo-white-500: #FFFFFF;
-	--color-echo-black-500: #1D1D1B;
+:root {
+	--base-color-echo-yellow: #FFD130;
+	--base-color-echo-gray: #393738;
+	--base-color-echo-white: #FFFFFF;
+	--base-color-echo-black: #1D1D1B;
+
+	--color-scheme-preparation: var(--color-echo-yellow-500);
+	--color-scheme-normal: #D32F2F;
+	--color-scheme-rest: #00BCD4;
+	--color-scheme-finished: #D32F2F;
+
+	background-color: var(--base-color-echo-black);
+	color: var(--base-color-echo-white);
+	font-size: 16px;
 }
 
-:root {
-	background-color: #1D1D1B;
-	color: #fff;
+@theme {
+	--color-echo-yellow-500: var(--base-color-echo-yellow);
+	--color-echo-gray-500: var(--base-color-echo-gray);
+	--color-echo-white-500: var(--base-color-echo-white);
+	--color-echo-black-500: var(--base-color-echo-black);
 }
 
 .timer-circle {
 	/* 60px em cima e em baixo */
-	height: calc(100vh - 120px);
-	width: calc(100vh - 120px);
+	height: min(100vw, calc(100vh - 120px));
+	width: min(100vw, calc(100vh - 120px));
+	overflow: hidden;
 }
 
 .text-15xl {
@@ -28,24 +40,28 @@
 	line-height: 1;
 }
 
-/* NORMAL", "PREPARATION", "REST", "FINISHED */
-
-.timer-color-scheme-normal {
-	border-color: #D32F2F;
-	color: #FFF;
+.timer-color-scheme-preparation,
+.timer-color-scheme-preparation .circle-progress-bar-active {
+	color: var(--color-scheme-preparation);
+	stroke: var(--color-scheme-preparation);
 }
 
-.timer-color-scheme-preparation {
-	color: #FFD130;
+.timer-color-scheme-normal,
+.timer-color-scheme-normal .circle-progress-bar-active {
+	color: var(--base-color-echo-white);
+	stroke: var(--color-scheme-normal);
 }
 
-.timer-color-scheme-rest {
-	color: #00BCD4;
+.timer-color-scheme-rest,
+.timer-color-scheme-rest .circle-progress-bar-active {
+	color: var(--color-scheme-rest);
+	stroke: var(--color-scheme-rest);
 }
 
-.timer-color-scheme-finished {
-	border-color: #D32F2F;
-	color: #FFF;
+.timer-color-scheme-finished,
+.timer-color-scheme-finished .circle-progress-bar-active {
+	color: var(--base-color-echo-white);
+	stroke: var(--color-scheme-finished);
 }
 
 .timer-color-scheme-finished .timer-step-time {
@@ -68,7 +84,7 @@
 	100% {
 	  opacity: 1;
 	}
-  }
+}
 
 /* :root {
 	font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;

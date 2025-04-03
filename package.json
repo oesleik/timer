@@ -4,14 +4,13 @@
   "version": "0.0.0",
   "type": "module",
   "homepage": "https://oesleik.github.io/timer",
-
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-	"predeploy": "yarn build",
-	"deploy": "gh-pages -d dist"
+    "predeploy": "yarn build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.17",
