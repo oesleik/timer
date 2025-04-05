@@ -11,9 +11,16 @@
 	--color-scheme-rest: #00BCD4;
 	--color-scheme-finished: #D32F2F;
 
+	--font-display: "Inter", "Arial", "sans-serif";
+
 	background-color: var(--base-color-echo-black);
 	color: var(--base-color-echo-white);
+	font-family: var(--font-display);
 	font-size: 16px;
+}
+
+html, body, #root {
+	height: 100%;
 }
 
 @theme {
@@ -24,10 +31,38 @@
 }
 
 .timer-circle {
-	/* 60px em cima e em baixo */
-	height: min(100vw, calc(100vh - 120px));
-	width: min(100vw, calc(100vh - 120px));
+	/* 136px referente a elementos em cima e em baixo */
+	height: min(calc(100vw - 30px), calc(100vh - 136px));
+	width: min(calc(100vw - 30px), calc(100vh - 136px));
+	font-size: min(5vw, calc(5vh - 5px));
 	overflow: hidden;
+	line-height: 1;
+}
+
+.full-size-timer .timer-circle {
+	height: min(calc(100vw - 30px), calc(100vh - 40px));
+	width: min(calc(100vw - 30px), calc(100vh - 40px));
+	font-size: min(5vw, 5vh);
+}
+
+.timer-round-number {
+	font-size: 1.8em;
+}
+
+.timer-round-desc {
+	font-size: 0.8em;
+}
+
+.timer-step-description {
+	font-size: 1.8em;
+}
+
+.timer-clock {
+	font-size: 5.7em;
+}
+
+.timer-clock.time-with-hour-format {
+	font-size: 5em;
 }
 
 .text-15xl {
@@ -38,6 +73,11 @@
 .text-18xl {
 	font-size: 18rem /* 128px */;
 	line-height: 1;
+}
+
+.circle-progress-bar {
+	stroke: var(--base-color-echo-gray);
+	opacity: 0.2;
 }
 
 .timer-color-scheme-preparation,

@@ -1,37 +1,41 @@
-export const CircularProgress = ({ progress, size = 100, direction = "DESC" }: { progress: number; size?: number, direction?: "ASC" | "DESC" }) => {
+export const CircularProgress = ({ progress, direction = "DESC" }: {
+	progress: number,
+	direction: "ASC" | "DESC",
+}) => {
+	progress = progress / 100;
+
 	if (direction == "DESC") {
 		progress = 1 - progress;
 	}
 
-	const offsetDirectionFactor = direction == "DESC" ? 1 : -1;
-	const radius = size / 2 - 5; // Ajusta o raio para o tamanho do SVG
+	const strokeWidth = 1.4;
+	const radius = Math.floor(50 - strokeWidth);
 	const circumference = 2 * Math.PI * radius;
+
+	const offsetDirectionFactor = direction == "DESC" ? 1 : -1;
 	const offset = circumference * (1 - progress) * offsetDirectionFactor;
 
 	return (
-		<svg viewBox={`0 0 ${size} ${size}`} className="h-full w-full">
+		<svg viewBox={`0 0 100 100`} className="h-full w-full">
 			<circle
-				cx={size / 2}
-				cy={size / 2}
+				cx={50}
+				cy={50}
 				r={radius}
 				fill="none"
-				stroke="#333"
 				strokeDasharray={circumference}
-				strokeWidth="1.4"
-				opacity="0.2"
+				strokeWidth={strokeWidth}
 				className="circle-progress-bar"
 			/>
 			<circle
-				cx={size / 2}
-				cy={size / 2}
+				cx={50}
+				cy={50}
 				r={radius}
 				fill="none"
-				stroke="limegreen"
-				strokeWidth="1.4"
+				strokeWidth={strokeWidth}
 				strokeDasharray={circumference}
 				strokeDashoffset={offset}
 				strokeLinecap="round"
-				transform={`rotate(-90 ${size / 2} ${size / 2})`}
+				transform={`rotate(-90 50 50)`}
 				className="circle-progress-bar-active"
 				style={{
 					transition: "stroke-dashoffset 1s linear",

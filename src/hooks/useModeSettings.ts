@@ -20,7 +20,7 @@ type RoundSettings = {
 };
 
 type RoundStepSettings = {
-	duration: number | typeof NO_LIMIT | CustomParamReplacement,
+	duration: number | CustomParamReplacement,
 	direction?: TimerDirection | CustomParamReplacement,
 	description?: string,
 	colorScheme?: ColorScheme,
@@ -35,7 +35,7 @@ export type ParsedRoundSettings = {
 };
 
 type ParsedRoundStepSettings = {
-	duration: number | typeof NO_LIMIT,
+	duration: number,
 	direction: TimerDirection,
 	description: string,
 	colorScheme: ColorScheme,
@@ -60,8 +60,6 @@ type CustomOptionsParam<T extends string = string> = {
 };
 
 export type CustomParamReplacement = `__${string}__`;
-
-export const NO_LIMIT = "NO_LIMIT";
 
 export const COLOR_SCHEME_MAP: Record<ColorScheme, string> = {
 	PREPARATION: "#FFFFFF",

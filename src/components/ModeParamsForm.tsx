@@ -1,107 +1,14 @@
 import { useEffect, useState } from "react";
-import { CustomParamReplacement, CustomParamSettings, ModeSettings, NO_LIMIT, ParsedRoundSettings, TimeFormat, ValidColorSchemes, ValidTimerDirections } from "../hooks/useModeSettings";
+import { CustomParamSettings, ModeSettings } from "../hooks/useModeSettings";
 
 type FormData = Record<string, string>;
 
-const isCustomParamReplacement = (value: unknown): value is CustomParamReplacement => {
-	return typeof value === "string" && value.startsWith("__") && value.endsWith("__");
-};
-
-function replaceConfigWithParam<T>(config: T | CustomParamReplacement, params: FormData, paramsConfig: ModeSettings["customParams"]): T | string | number | null {
-	if (isCustomParamReplacement(config)) {
-		return getParamValueForConfigByRef(config, params, paramsConfig);
-	}
-
-	return config;
-};
-
-function replaceStringWithParam(config: string | null | undefined, params: FormData): string | null | undefined {
-	if (!config) {
-		return config;
-	}
-
-	for (const ref in params) {
-		const fullRef = "__" + ref + "__";
-		config = config.replace(fullRef, params[ref]);
-	}
-
-	return config;
-};
-
-const getParamValueForConfigByRef = (config: CustomParamReplacement, params: FormData, paramsConfig: ModeSettings["customParams"]): string | number | null => {
-	for (const ref in params) {
-		const fullRef = "__" + ref + "__";
-
-		if (fullRef === config) {
-			const paramConfig = (paramsConfig || {})[ref] || {};
-			let value: string | number = params[ref];
-
-			if (paramConfig.inputType === "number") {
-				value = Number(value);
-
-				if (paramConfig.parseValue) {
-					value = paramConfig.parseValue(value);
-				}
-			}
-
-			return value;
-		}
-	}
-
-	return null;
-};
-
-function valueShouldBeOneOf<T>(config: T | unknown, validValues: readonly T[]): T | null {
-	if (!validValues.includes(config as T)) {
-		return null;
-	}
-
-	return config as T;
-};
-
-const parseRouteSettings = (mode: ModeSettings, params: FormData): ParsedRoundSettings => {
-	return {
-		rounds: Number(replaceConfigWithParam(mode.roundSettings.rounds, params, mode.customParams) || 0),
-		roundSteps: mode.roundSettings.roundSteps.map((step): ParsedRoundSettings["roundSteps"][0] => {
-			const duration = step.duration == NO_LIMIT ? NO_LIMIT : Number(replaceConfigWithParam(step.duration, params, mode.customParams) || 0);
-
-			return {
-				duration,
-				direction: valueShouldBeOneOf(replaceConfigWithParam(step.direction, params, mode.customParams), ValidTimerDirections) || "DESC",
-				description: replaceStringWithParam(step.description, params) || "",
-				colorScheme: valueShouldBeOneOf(replaceConfigWithParam(step.colorScheme, params, mode.customParams), ValidColorSchemes) || "NORMAL",
-				onlyFirstRound: step.onlyFirstRound === true,
-				hideLastRound: step.hideLastRound === true,
-				timeFormat: step.timeFormat || guessTimeFormat(duration),
-			};
-		}).filter(step => {
-			return step.duration === NO_LIMIT || step.duration > 0;
-		}),
-	};
-};
-
-const guessTimeFormat = (duration: ParsedRoundSettings["roundSteps"][0]["duration"]): TimeFormat => {
-	if (typeof duration !== "number") {
-		return "MM:SS";
-	}
-
-	if (duration >= 60 * 60) {
-		return "H:MM:SS";
-	}
-
-	if (duration > 60) {
-		return "MM:SS"
-	}
-
-	return "S";
-}
-
 export const ModeParamsForm = ({
 	modeSettings,
-	setParsedSettings,
+	setCustomSettings,
 }: {
 	modeSettings: ModeSettings,
-	setParsedSettings: (v: ParsedRoundSettings) => void,
+	setCustomSettings: (v: FormData) => void,
 }) => {
 	const customParams = modeSettings.customParams || {};
 
@@ -120,14 +27,12 @@ export const ModeParamsForm = ({
 
 	useEffect(() => {
 		if (!Object.keys(modeSettings.customParams || {}).length) {
-			const parsedSettings = parseRouteSettings(modeSettings, {});
-			setParsedSettings(parsedSettings);
+			setCustomSettings(formData);
 		}
-	}, [modeSettings, setParsedSettings]);
+	}, [modeSettings, setCustomSettings, formData]);
 
 	const submitParams = () => {
-		const parsedSettings = parseRouteSettings(modeSettings, formData);
-		setParsedSettings(parsedSettings);
+		setCustomSettings(formData);
 	};
 
 	if (!Object.keys(customParams).length) {
@@ -167,7 +72,6 @@ const CustomParamInput = ({ param, value, setValue }: {
 			</label>
 			<input
 				type="number"
-				defaultValue={param.defaultValue}
 				value={value}
 				onChange={event => setValue(event.target.value)}
 				className="shadow appearance-none border rounded w-full py-2 px-3 mb-6 text-echo-white-500 leading-tight focus:outline-none focus:shadow-outline"

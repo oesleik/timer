@@ -1,9 +1,9 @@
 import { useParams } from "react-router";
-import { TimerPage } from "../pages/TimerPage";
 import { useModeSettings } from "../hooks/useModeSettings";
+import { ModeSelectConfigPage } from "../pages/ModeSelectConfigPage";
 
-export const TimerRoute = () => {
+export const ModeSelectConfigRoute = () => {
 	const params = useParams();
 	const modeSettings = useModeSettings(params.mode || "");
-	return <TimerPage modeSettings={modeSettings} />
+	return <ModeSelectConfigPage modeSettings={modeSettings} />
 }
