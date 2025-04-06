@@ -17,11 +17,12 @@ export const useReceiver = () => {
 		if (!cast) return;
 
 		const context = cast.framework.CastReceiverContext.getInstance();
-		context.start();
 
 		context.addCustomMessageListener(APP_CONFIG.TIMER_CHANNEL_NAMESPACE, (event) => {
 			trigger(event.type, event.data);
 		});
+
+		context.start();
 	}, [cast]);
 
 	return { isLoaded: cast != null, onMessage: on };
