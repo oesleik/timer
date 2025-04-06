@@ -1,66 +1,32 @@
-import { ButtonHTMLAttributes, PropsWithChildren } from "react";
+import { ButtonHTMLAttributes, PropsWithChildren, useEffect } from "react";
 import { useNavigate } from "react-router";
 import { ModeSettings, ParsedRoundSettings } from "../hooks/useModeSettings";
-// import { useChromecastSender } from "use-chromecast-caf-sender";
-// import { APP_CONFIG } from "../app_config";
 import { MainTimer } from "../components/MainTimer";
 import { MainTimerState, useMainTimerState } from "../hooks/useMainTimerState";
-
-// const useSetChromeCastConfig = () => {
-// 	const { cast } = useChromecastSender();
-
-// 	useEffect(() => {
-// 		if (!cast) return;
-// 		cast.framework.CastContext.getInstance().setOptions({
-// 			receiverApplicationId: APP_CONFIG.CHROMECAST_APP_ID,
-// 			autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
-// 		});
-// 	}, [cast]);
-// };
-
-// const useSendMessage = () => {
-// 	const { cast } = useChromecastSender();
-
-// 	return (action: string, data: unknown) => {
-// 		if (!cast) return;
-// 		cast.framework.CastContext.getInstance().setOptions({
-// 			receiverApplicationId: APP_CONFIG.CHROMECAST_APP_ID,
-// 			autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
-// 		});
-// 		const session = cast.framework.CastContext.getInstance().getCurrentSession();
-// 		if (!session) return;
-// 		session.sendMessage("urn:x-cast:timer-app.timer", JSON.stringify({ action, data }));
-// 	};
-// };
+import { useSender } from "../hooks/useSender";
 
 export const TimerControlPage = ({ modeSettings, roundSettings }: {
 	modeSettings: ModeSettings,
 	roundSettings: ParsedRoundSettings
 }) => {
-	// useSetChromeCastConfig();
+	const { sendMessage } = useSender();
 	const navigate = useNavigate();
 	const mainTimerState = useMainTimerState(roundSettings);
-	// const castSession = useRef(null);
 
-	// useEffect(() => {
-	// 	const session = cast.framework.CastContext.getInstance().getCurrentSession();
-	// 	castSession.current = session;
-	// }, []);
-
-	// const castMessage = (action: string, data: unknown) => {
-	// 	if (castSession) {
-	// 		castSession.castMessage("urn:x-cast:com.example.custom", message);
-	// 	}
-	// };
-
-	// {/* @ts-expect-error undefined tag */}
-	// <google-cast-launcher></google-cast-launcher>
+	useEffect(() => {
+		sendMessage("setIsRunning", { isRunning: mainTimerState.isRunning });
+	}, [mainTimerState.isRunning, sendMessage]);
 
 	return <div className="flex flex-col h-full px-5">
 		<div className="flex justify-between gap-5 pt-5">
 			<div>
 				<Button onClick={() => navigate("/")}>Voltar</Button>
 				<h1 className="inline-block ml-5">{modeSettings.description}</h1>
+			</div>
+
+			<div className="h-8 cursor-pointer ml-5 mt-2 mr-2">
+				{/* @ts-expect-error undefined tag */}
+				<google-cast-launcher></google-cast-launcher>
 			</div>
 		</div>
 
