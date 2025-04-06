@@ -9,4 +9,12 @@ export default defineConfig({
 		react(),
 		tailwindcss(),
 	],
+	build: {
+		rollupOptions: {
+			input: {
+				index: 'index.html',
+				admin: 'receiver.html',
+			},
+		},
+	},
 })
