@@ -3,6 +3,7 @@ import { useSecondsTimer } from "../hooks/useSecondsTimer";
 import { ParsedRoundSettings, TimeFormat } from "../hooks/useModeSettings";
 import { CircularProgress } from "../pages/CircularProgress";
 import { MainTimerState } from "../hooks/useMainTimerState";
+import { useTimerSoundEffects } from "../hooks/useTimerSoundEffects";
 
 export const MainTimer = ({ roundSettings, mainTimerState, fullSize = false }: {
 	roundSettings: ParsedRoundSettings,
@@ -27,27 +28,29 @@ export const MainTimer = ({ roundSettings, mainTimerState, fullSize = false }: {
 	);
 };
 
-const StepTimer = ({
-	step: {
+const StepTimer = ({ step, mainTimerState }: {
+	step: ParsedRoundSettings["roundSteps"][0],
+	mainTimerState: MainTimerState
+}) => {
+	const {
 		duration,
 		direction,
 		timeFormat,
 		colorScheme,
 		description,
-	},
-	mainTimerState: {
+	} = step;
+
+	const {
 		isRunning,
 		isFinished,
 		currentRound,
 		showRounds,
 		maxRounds,
 		nextStep,
-	},
-}: {
-	step: ParsedRoundSettings["roundSteps"][0],
-	mainTimerState: MainTimerState
-}) => {
+	} = mainTimerState;
+
 	const timer = useSecondsTimer({ maxDuration: duration, direction: direction, isRunning });
+	useTimerSoundEffects(timer, mainTimerState);
 
 	useEffect(() => {
 		if (timer.isFinished) nextStep();
