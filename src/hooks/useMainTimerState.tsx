@@ -66,13 +66,25 @@ export const useMainTimerState = (roundSettings: ParsedRoundSettings): MainTimer
 
 			if (nextStepIdx > 0) {
 				const isLastStep = getNextStepIdx(state.currentRound, nextStepIdx + 1) <= 0;
-				return { ...state, currentStep: nextStepIdx + 1, isLastStep };
+
+				return {
+					...state,
+					currentStep: nextStepIdx + 1,
+					isLastStep,
+				};
 			}
 
 			if (state.currentRound < roundSettings.rounds) {
 				const firstStepIdx = roundSettings.roundSteps.findIndex(step => !step.onlyFirstRound);
 				const isLastStep = getNextStepIdx(state.currentRound + 1, firstStepIdx + 1) <= 0;
-				return { ...state, currentRound: state.currentRound + 1, currentStep: firstStepIdx + 1, isLastStep };
+
+				return {
+					...state,
+					currentRound: state.currentRound + 1,
+					currentStep: firstStepIdx + 1,
+					isLastRound: state.currentRound + 1 >= roundSettings.rounds,
+					isLastStep,
+				};
 			}
 
 			return { ...state, isFinished: true };
