@@ -16,7 +16,13 @@
 		<script src="//www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"></script>
 	</head>
 	<body>
+		Loading receiver app...
 		<div id="root"></div>
-		<script type="module" src="/src/main-receiver.tsx"></script>
+		<!-- <script type="module" src="/src/main-receiver.tsx"></script> -->
+
+		<script>
+			const context = cast.framework.CastReceiverContext.getInstance();
+			context.start();
+		</script>
 	</body>
 </html>
