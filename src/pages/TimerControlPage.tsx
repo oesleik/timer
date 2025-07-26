@@ -1,22 +1,20 @@
-import { ButtonHTMLAttributes, PropsWithChildren, useEffect } from "react";
+import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import { useNavigate } from "react-router";
 import { ModeSettings, ParsedRoundSettings } from "../hooks/useModeSettings";
 import { MainTimer } from "../components/MainTimer";
 import { MainTimerState, useMainTimerState } from "../hooks/useMainTimerState";
-import { useSender } from "../hooks/useSender";
+
 import { SoundVolumeState } from "../hooks/useSoundVolumeState";
 
 export const TimerControlPage = ({ modeSettings, roundSettings }: {
 	modeSettings: ModeSettings,
 	roundSettings: ParsedRoundSettings
 }) => {
-	const { sendMessage } = useSender();
+	
 	const navigate = useNavigate();
 	const mainTimerState = useMainTimerState(roundSettings);
 
-	useEffect(() => {
-		sendMessage("setIsRunning", { isRunning: mainTimerState.isRunning });
-	}, [mainTimerState.isRunning, sendMessage]);
+	
 
 	return <div className="flex flex-col h-full px-5">
 		<div className="flex justify-between gap-5 pt-5">
@@ -25,10 +23,7 @@ export const TimerControlPage = ({ modeSettings, roundSettings }: {
 				<h1 className="inline-block ml-5">{modeSettings.description}</h1>
 			</div>
 
-			<div className="h-8 cursor-pointer ml-5 mt-2 mr-2">
-				{/* @ts-expect-error undefined tag */}
-				<google-cast-launcher></google-cast-launcher>
-			</div>
+			
 		</div>
 
 		<div className="flex flex-col h-full justify-center">

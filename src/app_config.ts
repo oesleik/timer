@@ -1,7 +1,4 @@
 export const APP_CONFIG = {
-	CHROMECAST_APP_ID: "F5829606",
-	TIMER_CHANNEL_NAMESPACE: "urn:x-cast:timer-app.timer",
-
 	// Sound effects
 	SFX_COUNTDOWN_BEEP: "./short_beep.mp3",
 	SFX_COUNTDOWN_FINISHED_BEEP: "./long_beep.mp3",
