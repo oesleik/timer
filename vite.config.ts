@@ -13,7 +13,6 @@ export default defineConfig({
 		rollupOptions: {
 			input: {
 				index: 'index.html',
-				admin: 'receiver.html',
 			},
 		},
 	},
