@@ -109,7 +109,7 @@ const formatTime = (time: number, timeFormat: TimeFormat): string => {
 		parts.push(("00" + String(minutes)).substr(-2));
 	}
 
-	if (timeFormat == "SS" && time == 60) {
+	if (!parts.length && time == 60) {
 		return "60";
 	} else if (timeFormat.includes("SS") || time >= 10) {
 		parts.push(("00" + String(seconds)).substr(-2));
