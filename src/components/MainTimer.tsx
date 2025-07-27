@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useSecondsTimer } from "../hooks/useSecondsTimer";
-import { ParsedRoundSettings, TimeFormat } from "../hooks/useModeSettings";
+import { ParsedRoundSettings, TimeFormat } from "../modes/types";
 import { CircularProgress } from "../pages/CircularProgress";
 import { MainTimerState } from "../hooks/useMainTimerState";
 import { useTimerSoundEffects } from "../hooks/useTimerSoundEffects";

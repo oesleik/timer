@@ -10,11 +10,8 @@ export const TimerControlPage = ({ modeSettings, roundSettings }: {
 	modeSettings: ModeSettings,
 	roundSettings: ParsedRoundSettings
 }) => {
-	
 	const navigate = useNavigate();
 	const mainTimerState = useMainTimerState(roundSettings);
-
-	
 
 	return <div className="flex flex-col h-full px-5">
 		<div className="flex justify-between gap-5 pt-5">
@@ -22,8 +19,6 @@ export const TimerControlPage = ({ modeSettings, roundSettings }: {
 				<Button onClick={() => navigate("/")}>Voltar</Button>
 				<h1 className="inline-block ml-5">{modeSettings.description}</h1>
 			</div>
-
-			
 		</div>
 
 		<div className="flex flex-col h-full justify-center">

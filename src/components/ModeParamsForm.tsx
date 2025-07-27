@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { CustomParamSettings, ModeSettings } from "../hooks/useModeSettings";
+import { CustomParamSettings, ModeSettings } from "../modes/types";
 
 type FormData = Record<string, string>;
 

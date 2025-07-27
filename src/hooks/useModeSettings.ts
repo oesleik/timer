@@ -1,217 +1,9 @@
-import { KeysOfObject, ValuesOfArray } from "../utils/TypeUtils";
-
-export const ValidColorSchemes = ["NORMAL", "PREPARATION", "REST", "FINISHED"] as const;
-export const ValidTimerDirections = ["ASC", "DESC"] as const;
-
-type ColorScheme = ValuesOfArray<typeof ValidColorSchemes>;
-type TimerDirection = ValuesOfArray<typeof ValidTimerDirections>;
-export type TimeFormat = "H:MM:SS" | "MM:SS" | "SS" | "S";
-
-export type ModeSettings = {
-	ref: KeysOfObject<typeof DEFAULT_SETTINGS> | `CUSTOM_${string}`,
-	description: string,
-	roundSettings: RoundSettings,
-	customParams?: Record<string, CustomParamSettings>,
-};
-
-type RoundSettings = {
-	rounds: number | CustomParamReplacement, // set to 0 to not show rounds
-	roundSteps: RoundStepSettings[],
-};
-
-type RoundStepSettings = {
-	duration: number | CustomParamReplacement,
-	direction?: TimerDirection | CustomParamReplacement,
-	description?: string,
-	colorScheme?: ColorScheme,
-	onlyFirstRound?: boolean,
-	hideLastRound?: boolean,
-	timeFormat?: TimeFormat,
-};
-
-export type ParsedRoundSettings = {
-	rounds: number,
-	roundSteps: ParsedRoundStepSettings[],
-};
-
-type ParsedRoundStepSettings = {
-	duration: number,
-	direction: TimerDirection,
-	description: string,
-	colorScheme: ColorScheme,
-	onlyFirstRound: boolean,
-	hideLastRound: boolean,
-	timeFormat: TimeFormat,
-};
-
-export type CustomParamSettings = { description: string } & CustomTypeParam;
-type CustomTypeParam = CustomNumberParam | CustomOptionsParam;
-
-type CustomNumberParam = {
-	inputType: "number",
-	defaultValue: number,
-	parseValue?: (value: number) => number,
-};
-
-type CustomOptionsParam<T extends string = string> = {
-	inputType: "options",
-	options: { value: T, label: string }[],
-	defaultValue: T,
-};
-
-export type CustomParamReplacement = `__${string}__`;
-
-export const COLOR_SCHEME_MAP: Record<ColorScheme, string> = {
-	PREPARATION: "#FFFFFF",
-	NORMAL: "#FFFFFF",
-	REST: "#FFFFFF",
-	FINISHED: "#FFFFFF",
-} as const;
-
-const PREPARATION_STEP: RoundStepSettings = {
-	duration: 10,
-	direction: "DESC",
-	description: "Preparation",
-	colorScheme: "PREPARATION",
-	onlyFirstRound: true,
-	timeFormat: "S"
-} as const;
-
-const REST_STEP: Partial<RoundStepSettings> = {
-	description: "Rest",
-	colorScheme: "REST",
-	hideLastRound: true,
-	timeFormat: "S"
-} as const;
-
-const DEFAULT_SETTINGS: Record<string, ModeSettings> = {
-	NOT_FOUND: {
-		ref: "NOT_FOUND",
-		description: "Não encontrado",
-		roundSettings: {
-			rounds: 0,
-			roundSteps: []
-		}
-	},
-	AMRAP: {
-		ref: "AMRAP",
-		description: "AMRAP",
-		roundSettings: {
-			rounds: 0,
-			roundSteps: [
-				PREPARATION_STEP,
-				{ duration: "__duration__", description: "AMRAP __duration__'", direction: "__direction__" }
-			]
-		},
-		customParams: {
-			"duration": {
-				description: "Duration (minutes)",
-				inputType: "number",
-				defaultValue: 15,
-				parseValue: value => value * 60,
-			},
-			"direction": {
-				description: "Timer direction",
-				inputType: "options",
-				options: [
-					{ value: "DESC", label: "Descending" },
-					{ value: "ASC", label: "Ascending" },
-				],
-				defaultValue: "DESC",
-			} satisfies CustomParamSettings & CustomOptionsParam<TimerDirection>,
-		}
-	},
-	TABATA: {
-		ref: "TABATA",
-		description: "TABATA",
-		roundSettings: {
-			rounds: "__rounds__",
-			roundSteps: [
-				PREPARATION_STEP,
-				{ duration: "__duration__" },
-				{ ...REST_STEP, duration: "__rest_duration__" }
-			]
-		},
-		customParams: {
-			"rounds": {
-				description: "Rounds",
-				inputType: "number",
-				defaultValue: 8,
-			},
-			"duration": {
-				description: "Duration (seconds)",
-				inputType: "number",
-				defaultValue: 20,
-			},
-			"rest_duration": {
-				description: "Rest (seconds)",
-				inputType: "number",
-				defaultValue: 10,
-			},
-		}
-	},
-	EMOM: {
-		ref: "EMOM",
-		description: "EMOM",
-		roundSettings: {
-			rounds: "__rounds__",
-			roundSteps: [
-				PREPARATION_STEP,
-				{ duration: "__duration__" },
-				{ ...REST_STEP, duration: "__rest_duration__" }
-			]
-		},
-		customParams: {
-			"rounds": {
-				description: "Rounds",
-				inputType: "number",
-				defaultValue: 8,
-			},
-			"duration": {
-				description: "Duration (seconds)",
-				inputType: "number",
-				defaultValue: 60,
-			},
-			"rest_duration": {
-				description: "Rest (seconds)",
-				inputType: "number",
-				defaultValue: 0,
-			},
-		}
-	},
-	FOR_TIME: {
-		ref: "FOR_TIME",
-		description: "FOR TIME",
-		roundSettings: {
-			rounds: 0,
-			roundSteps: [
-				PREPARATION_STEP,
-				{ duration: "__duration__", direction: "__direction__" }
-			]
-		},
-		customParams: {
-			"duration": {
-				description: "Duration (minutes)",
-				inputType: "number",
-				defaultValue: 120,
-				parseValue: value => value * 60,
-			},
-			"direction": {
-				description: "Timer direction",
-				inputType: "options",
-				options: [
-					{ value: "DESC", label: "Descending" },
-					{ value: "ASC", label: "Ascending" },
-				],
-				defaultValue: "ASC",
-			} satisfies CustomParamSettings & CustomOptionsParam<TimerDirection>,
-		}
-	}
-} as const;
+import { DEFAULT_MODES } from "../modes/default-modes";
+import { ModeSettings } from "../modes/types";
 
 export const getAvailableModes = () => {
-	return Object.keys(DEFAULT_SETTINGS).filter(key => key != "NOT_FOUND").map(key => {
-		const mode = DEFAULT_SETTINGS[key];
+	return Object.keys(DEFAULT_MODES).filter(key => key != "NOT_FOUND").map(key => {
+		const mode = DEFAULT_MODES[key];
 
 		return {
 			ref: mode.ref,
@@ -221,8 +13,8 @@ export const getAvailableModes = () => {
 };
 
 export const useModeSettings = (ref: string): ModeSettings => {
-	if (DEFAULT_SETTINGS[ref]) {
-		return DEFAULT_SETTINGS[ref];
+	if (DEFAULT_MODES[ref]) {
+		return DEFAULT_MODES[ref];
 	}
 
 	if (ref.startsWith("CUSTOM_")) {
@@ -230,7 +22,7 @@ export const useModeSettings = (ref: string): ModeSettings => {
 		if (customModeSettings != null) return customModeSettings;
 	}
 
-	return DEFAULT_SETTINGS.NOT_FOUND;
+	return DEFAULT_MODES.NOT_FOUND;
 };
 
 const getLocalSavedSettings = (ref: string) => {

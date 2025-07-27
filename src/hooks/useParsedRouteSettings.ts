@@ -1,4 +1,4 @@
-import { CustomParamReplacement, ModeSettings, ParsedRoundSettings, TimeFormat, ValidColorSchemes, ValidTimerDirections } from "../hooks/useModeSettings";
+import { CustomParamReplacement, ModeSettings, ParsedRoundSettings, TimeFormat, ValidColorSchemes, ValidTimerDirections } from "../modes/types";
 
 type FormData = Record<string, string>;
 

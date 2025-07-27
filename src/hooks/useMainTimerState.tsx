@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 import { TimerRunningState, useTimerRunningState } from "./useSecondsTimer";
-import { ParsedRoundSettings } from "./useModeSettings";
+import { ParsedRoundSettings } from "../modes/types";
 import { SoundVolumeState, useSoundVolumeState } from "./useSoundVolumeState";
 
 export type MainTimerState = {
