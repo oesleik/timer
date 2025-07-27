@@ -32,7 +32,7 @@ export const DEFAULT_MODES: Record<string, ModeSettings> = {
 			rounds: 0,
 			roundSteps: [
 				PREPARATION_STEP,
-				{ duration: "__duration__", description: "AMRAP __duration__'", direction: "__direction__" }
+				{ duration: "__duration__", description: "AMRAP __duration__'", direction: "__direction__", timeFormat: "MM:SS" }
 			]
 		},
 		customParams: {
@@ -49,7 +49,7 @@ export const DEFAULT_MODES: Record<string, ModeSettings> = {
 					{ value: "DESC", label: "Descending" },
 					{ value: "ASC", label: "Ascending" },
 				],
-				defaultValue: "DESC",
+				defaultValue: "ASC",
 			} satisfies CustomParamSettings & CustomOptionsParam<TimerDirection>,
 		}
 	},
@@ -118,7 +118,7 @@ export const DEFAULT_MODES: Record<string, ModeSettings> = {
 			rounds: 0,
 			roundSteps: [
 				PREPARATION_STEP,
-				{ duration: "__duration__", direction: "__direction__" }
+				{ duration: "__duration__", direction: "__direction__", timeFormat: "MM:SS" }
 			]
 		},
 		customParams: {
