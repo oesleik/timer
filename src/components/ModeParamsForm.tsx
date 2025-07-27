@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomParamSettings, ModeSettings } from "../modes/types";
 
 type FormData = Record<string, string>;
@@ -11,7 +11,7 @@ export const ModeParamsForm = ({
 	setCustomSettings: (v: FormData) => void,
 }) => {
 	const customParams = modeSettings.customParams || {};
-	const autoFocusOn = Object.entries(customParams).find(([_, param]) => param.inputType !== "options")?.[0];
+	const autoFocusOn = Object.entries(customParams).find(([, param]) => param.inputType !== "options")?.[0];
 
 	const [formData, setFormData] = useState<FormData>(() => {
 		const formData: FormData = {};

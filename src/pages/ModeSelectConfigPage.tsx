@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import { useNavigate } from "react-router";
-import { ModeSettings } from "../hooks/useModeSettings";
+import { ModeSettings } from "../modes/types";
 import { ModeParamsForm } from "../components/ModeParamsForm";
 
 export const ModeSelectConfigPage = ({ modeSettings }: { modeSettings: ModeSettings }) => {

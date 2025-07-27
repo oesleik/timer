@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import { useNavigate } from "react-router";
-import { ModeSettings, ParsedRoundSettings } from "../hooks/useModeSettings";
+import { ModeSettings, ParsedRoundSettings } from "../modes/types";
 import { MainTimer } from "../components/MainTimer";
 import { MainTimerState, useMainTimerState } from "../hooks/useMainTimerState";
 
