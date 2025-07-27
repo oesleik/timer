@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CustomParamSettings, ModeSettings } from "../modes/types";
 
 type FormData = Record<string, string>;
@@ -11,11 +11,12 @@ export const ModeParamsForm = ({
 	setCustomSettings: (v: FormData) => void,
 }) => {
 	const customParams = modeSettings.customParams || {};
+	const autoFocusOn = Object.entries(customParams).find(([_, param]) => param.inputType !== "options")?.[0];
 
 	const [formData, setFormData] = useState<FormData>(() => {
 		const formData: FormData = {};
 		Object.entries(customParams).forEach(([ref, param]) => {
-			formData[ref] = String(param.defaultValue);
+			formData[ref] = String(param.defaultValue || "");
 		});
 		return formData;
 	});
@@ -46,6 +47,7 @@ export const ModeParamsForm = ({
 					key={ref}
 					param={param}
 					value={formData[ref]}
+					autoFocus={autoFocusOn === ref}
 					setValue={(value: string) => setParamValue(ref, value)}
 				/>
 			))}
@@ -60,10 +62,11 @@ export const ModeParamsForm = ({
 	</>;
 };
 
-const CustomParamInput = ({ param, value, setValue }: {
+const CustomParamInput = ({ param, value, setValue, autoFocus }: {
 	param: CustomParamSettings,
 	value: string | undefined,
 	setValue: (value: string) => void
+	autoFocus?: boolean
 }) => {
 	if (param.inputType === "number") {
 		return <>
@@ -73,6 +76,8 @@ const CustomParamInput = ({ param, value, setValue }: {
 			<input
 				type="number"
 				value={value}
+				autoFocus={autoFocus}
+				onFocus={event => event.target.select()}
 				onChange={event => setValue(event.target.value)}
 				className="shadow appearance-none border rounded w-full py-2 px-3 mb-6 text-echo-white-500 leading-tight focus:outline-none focus:shadow-outline"
 			/>
