@@ -98,7 +98,7 @@ const StepTimer = ({ step, mainTimerState }: {
 const formatTime = (time: number, timeFormat: TimeFormat): string => {
 	const parts = [];
 	const hours = Math.floor(time / 60 / 60);
-	const minutes = Math.floor(time / 60);
+	const minutes = Math.floor(time / 60 % 60);
 	const seconds = Math.floor(time % 60);
 
 	if (timeFormat.includes("H") || time >= 60 * 60) {

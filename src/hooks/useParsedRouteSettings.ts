@@ -94,7 +94,7 @@ const guessTimeFormat = (duration: ParsedRoundSettings["roundSteps"][0]["duratio
 	}
 
 	if (duration > 60) {
-		return "MM:SS"
+		return "MM:SS";
 	}
 
 	return "S";
