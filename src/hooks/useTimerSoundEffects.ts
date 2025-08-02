@@ -5,7 +5,7 @@ import { APP_CONFIG } from "../app_config";
 
 export const useTimerSoundEffects = (timer: TimerState, mainTimerState: MainTimerState) => {
 	const { remaining } = timer;
-	const { isRunning, isFinished: _isFinished, isLastRound, isLastStep, isMuted } = mainTimerState;
+	const { isRunning, isFinished: _isFinished, isLastRound, isLastStep, sfxVolume } = mainTimerState;
 	const isFinished = _isFinished || (remaining == 0 && isLastRound && isLastStep);
 
 	const sfxCountdownRef = useRef(new Audio(APP_CONFIG.SFX_COUNTDOWN_BEEP));
@@ -13,7 +13,13 @@ export const useTimerSoundEffects = (timer: TimerState, mainTimerState: MainTime
 	const sfxCountdownFinishedRef = useRef(new Audio(APP_CONFIG.SFX_COUNTDOWN_FINISHED_BEEP));
 
 	useEffect(() => {
-		if (isMuted || !isRunning) return;
+		sfxCountdownRef.current.volume = sfxVolume;
+		sfxTimerFinishedRef.current.volume = sfxVolume;
+		sfxCountdownFinishedRef.current.volume = sfxVolume;
+	}, [sfxVolume]);
+
+	useEffect(() => {
+		if (!isRunning) return;
 
 		if ([1, 2, 3].includes(remaining)) {
 			sfxCountdownRef.current.currentTime = 0;
@@ -24,7 +30,7 @@ export const useTimerSoundEffects = (timer: TimerState, mainTimerState: MainTime
 		if (isFinished) {
 			sfxTimerFinishedRef.current.currentTime = 0;
 			sfxTimerFinishedRef.current.play();
-			let repeatFor = 1;
+			let repeatFor = 2;
 
 			const t = setInterval(() => {
 				sfxTimerFinishedRef.current.currentTime = 0;
@@ -32,7 +38,7 @@ export const useTimerSoundEffects = (timer: TimerState, mainTimerState: MainTime
 				repeatFor--;
 
 				if (repeatFor <= 0) {
-					clearTimeout(t);
+					clearInterval(t);
 				}
 			}, 1000);
 
@@ -44,5 +50,5 @@ export const useTimerSoundEffects = (timer: TimerState, mainTimerState: MainTime
 			sfxCountdownFinishedRef.current.play();
 			return;
 		}
-	}, [remaining, isFinished, isRunning, isMuted]);
+	}, [remaining, isFinished, isRunning]);
 };
