@@ -2,9 +2,9 @@
 
 :root {
 	--base-color-echo-yellow: #FFD130;
-	--base-color-echo-gray: #393738;
+	--base-color-echo-gray: #1D1D1B;
 	--base-color-echo-white: #FFFFFF;
-	--base-color-echo-black: #1D1D1B;
+	--base-color-echo-black: #000000;
 
 	--color-scheme-preparation: var(--color-echo-yellow-500);
 	--color-scheme-normal: #D32F2F;
