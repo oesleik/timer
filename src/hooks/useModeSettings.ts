@@ -1,38 +1,24 @@
 import { DEFAULT_MODES } from "../modes/default-modes";
-import { ModeSettings } from "../modes/types";
+import { ModeSettings, ModeType } from "../modes/types";
+import { getCustomModeFromStorage, getCustomModesFromStorage } from "./useCustomModeSettings";
 
 export const getAvailableModes = () => {
-	return Object.keys(DEFAULT_MODES).filter(key => key != "NOT_FOUND").map(key => {
-		const mode = DEFAULT_MODES[key];
-
-		return {
-			ref: mode.ref,
-			description: mode.description,
-		};
-	});
+	return Object.entries({
+		...DEFAULT_MODES,
+		...getCustomModesFromStorage(),
+	}).filter(([key]) => key != "NOT_FOUND").map(([key, mode]) => ({
+		ref: key,
+		description: mode.description,
+	}));
 };
 
-export const useModeSettings = (ref: string): ModeSettings => {
-	if (DEFAULT_MODES[ref]) {
-		return DEFAULT_MODES[ref];
+export const useModeSettings = (ref: ModeType | string): ModeSettings => {
+	if (ref in DEFAULT_MODES) {
+		return DEFAULT_MODES[ref as ModeType];
 	}
 
-	if (ref.startsWith("CUSTOM_")) {
-		const customModeSettings = getLocalSavedSettings(ref);
-		if (customModeSettings != null) return customModeSettings;
-	}
+	const customModeSettings = getCustomModeFromStorage(ref);
+	if (customModeSettings != null) return customModeSettings;
 
 	return DEFAULT_MODES.NOT_FOUND;
-};
-
-const getLocalSavedSettings = (ref: string) => {
-	const localItem = localStorage.getItem(ref);
-	const parsedItem = localItem ? JSON.parse(localItem) : null;
-
-	if (parsedItem != null) {
-		// todo
-		// return parsedItem as ModeSettings;
-	}
-
-	return null;
 };

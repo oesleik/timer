@@ -1,14 +1,14 @@
 import { ButtonHTMLAttributes, PropsWithChildren } from "react";
 import { useNavigate } from "react-router";
-import { ModeSettings } from "../modes/types";
+import { ModeSettings, ModeType } from "../modes/types";
 import { ModeParamsForm } from "../components/ModeParamsForm";
 
-export const ModeSelectConfigPage = ({ modeSettings }: { modeSettings: ModeSettings }) => {
+export const ModeSelectConfigPage = ({ modeSettings, ref }: { modeSettings: ModeSettings, ref: ModeType | string }) => {
 	const navigate = useNavigate();
 
 	const setCustomSettings = (customSettings: Record<string, string>) => {
 		const queryParams = new URLSearchParams(customSettings);
-		navigate("/timer/" + modeSettings.ref + "?" + queryParams.toString());
+		navigate("/timer/" + ref + "?" + queryParams.toString());
 	};
 
 	return <div className="flex flex-col h-screen py-5 px-5">
@@ -18,7 +18,7 @@ export const ModeSelectConfigPage = ({ modeSettings }: { modeSettings: ModeSetti
 		</div>
 
 		<div className="text-2xl flex flex-col items-center justify-center h-full max-w-xl mx-auto">
-			<ModeParamsForm modeSettings={modeSettings} setCustomSettings={setCustomSettings} />
+			<ModeParamsForm modeSettings={modeSettings} setCustomSettings={setCustomSettings} ref={ref} />
 		</div>
 	</div>;
 };

@@ -1,4 +1,4 @@
-import { CustomOptionsParam, CustomParamSettings, ModeSettings, RoundStepSettings, TimerDirection } from "./types";
+import { CustomOptionsParam, CustomParamSettings, ModeType, ModeSettings, RoundStepSettings, TimerDirection } from "./types";
 
 const PREPARATION_STEP: RoundStepSettings = {
 	duration: 10,
@@ -16,9 +16,9 @@ const REST_STEP: Partial<RoundStepSettings> = {
 	timeFormat: "S"
 } as const;
 
-export const DEFAULT_MODES: Record<string, ModeSettings> = {
+export const DEFAULT_MODES: Record<ModeType, ModeSettings> = {
 	NOT_FOUND: {
-		ref: "NOT_FOUND",
+		type: "NOT_FOUND",
 		description: "Não encontrado",
 		roundSettings: {
 			rounds: 0,
@@ -26,7 +26,7 @@ export const DEFAULT_MODES: Record<string, ModeSettings> = {
 		}
 	},
 	AMRAP: {
-		ref: "AMRAP",
+		type: "AMRAP",
 		description: "AMRAP",
 		roundSettings: {
 			rounds: 0,
@@ -54,7 +54,7 @@ export const DEFAULT_MODES: Record<string, ModeSettings> = {
 		}
 	},
 	TABATA: {
-		ref: "TABATA",
+		type: "TABATA",
 		description: "TABATA",
 		roundSettings: {
 			rounds: "__rounds__",
@@ -83,7 +83,7 @@ export const DEFAULT_MODES: Record<string, ModeSettings> = {
 		}
 	},
 	EMOM: {
-		ref: "EMOM",
+		type: "EMOM",
 		description: "EMOM",
 		roundSettings: {
 			rounds: "__rounds__",
@@ -112,7 +112,7 @@ export const DEFAULT_MODES: Record<string, ModeSettings> = {
 		}
 	},
 	FOR_TIME: {
-		ref: "FOR_TIME",
+		type: "FOR_TIME",
 		description: "FOR TIME",
 		roundSettings: {
 			rounds: 0,

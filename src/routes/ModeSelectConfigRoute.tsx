@@ -5,5 +5,5 @@ import { ModeSelectConfigPage } from "../pages/ModeSelectConfigPage";
 export const ModeSelectConfigRoute = () => {
 	const params = useParams();
 	const modeSettings = useModeSettings(params.mode || "");
-	return <ModeSelectConfigPage modeSettings={modeSettings} />
+	return <ModeSelectConfigPage modeSettings={modeSettings} ref={params.mode || ""} />
 }
