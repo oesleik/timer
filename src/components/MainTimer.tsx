@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSecondsTimer } from "../hooks/useSecondsTimer";
 import { ParsedRoundSettings, TimeFormat } from "../modes/types";
-import { CircularProgress } from "../pages/CircularProgress";
 import { MainTimerState } from "../hooks/useMainTimerState";
 import { useTimerSoundEffects } from "../hooks/useTimerSoundEffects";
+import { RoundedTimer } from "./TimerView/RoundedTimer";
+import { TimerViewProps } from "./TimerView/TimerViewType";
 
 export const MainTimer = ({ roundSettings, mainTimerState, fullSize = false }: {
 	roundSettings: ParsedRoundSettings,
@@ -32,67 +33,34 @@ const StepTimer = ({ step, mainTimerState }: {
 	step: ParsedRoundSettings["roundSteps"][0],
 	mainTimerState: MainTimerState
 }) => {
-	const {
-		duration,
-		direction,
-		timeFormat,
-		colorScheme,
-		description,
-	} = step;
+	const timer = useSecondsTimer({
+		maxDuration: step.duration,
+		direction: step.direction,
+		isRunning: mainTimerState.isRunning,
+	});
 
-	const {
-		isRunning,
-		isFinished,
-		currentRound,
-		showRounds,
-		maxRounds,
-		nextStep,
-	} = mainTimerState;
-
-	const timer = useSecondsTimer({ maxDuration: duration, direction: direction, isRunning });
 	useTimerSoundEffects(timer, mainTimerState);
 
 	useEffect(() => {
-		if (timer.isFinished) nextStep();
-	}, [timer.isFinished, nextStep]);
+		if (timer.isFinished) mainTimerState.nextStep();
+	}, [timer.isFinished, mainTimerState.nextStep]);
 
-	const formatedTime = formatTime(timer.time, timeFormat);
-	const fontSizeVariationClass = formatedTime.length > 5 ? "time-with-hour-format" : "";
-	const timerColorScheme = "timer-color-scheme-" + (isFinished ? "finished" : colorScheme.toLowerCase());
+	const timerViewProps: TimerViewProps = {
+		description: step.description,
+		direction: step.direction,
+		formatedTime: formatTime(timer.time, step.timeFormat),
+		time: timer.time,
+		showRounds: mainTimerState.showRounds,
+		currentRound: mainTimerState.currentRound,
+		maxRounds: mainTimerState.maxRounds,
+		progress: timer.progress,
+		isFinished: mainTimerState.isFinished,
+		colorScheme: step.colorScheme,
+	};
 
-	return <>
-		<div className={`${timerColorScheme} relative timer-circle h-full`}>
-			<div className="absolute h-full w-full mx-auto pointer-events-none">
-				<CircularProgress progress={timer.progress} direction={direction} />
-			</div>
+	const TimerViewComponent: React.FC<TimerViewProps> = RoundedTimer;
 
-			<div className="flex flex-col items-center justify-center h-full text-center">
-				<div className="grow basis-0.5 flex flex-col justify-end">
-					{!description && showRounds ? (
-						<div className="timer-step-rounds">
-							<div className="timer-round-number font-light">
-								{currentRound}/{maxRounds}
-							</div>
-							<div className="timer-round-desc uppercase tracking-widest font-semibold">
-								Rounds
-							</div>
-						</div>
-					) : (
-						<div className="timer-step-description timer-step-description">
-							{description}
-						</div>
-					)}
-				</div>
-
-				<strong className={`timer-clock font-normal timer-step-time ${fontSizeVariationClass}`}>
-					{formatedTime}
-				</strong>
-
-				{/* Apenas para ocupar espaço e centralizar o timer */}
-				<div className="grow basis-0.5 w-full"></div>
-			</div>
-		</div>
-	</>;
+	return <TimerViewComponent {...timerViewProps} />;
 };
 
 const formatTime = (time: number, timeFormat: TimeFormat): string => {

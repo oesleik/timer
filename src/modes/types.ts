@@ -10,7 +10,7 @@ export const COLOR_SCHEME_MAP: Record<ColorScheme, string> = {
 	FINISHED: "#D32F2F",
 } as const;
 
-type ColorScheme = ValuesOfArray<typeof ValidColorSchemes>;
+export type ColorScheme = ValuesOfArray<typeof ValidColorSchemes>;
 export type TimerDirection = ValuesOfArray<typeof ValidTimerDirections>;
 export type TimeFormat = "H:MM:SS" | "MM:SS" | "SS" | "S";
 
