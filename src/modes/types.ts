@@ -16,6 +16,11 @@ export type TimeFormat = "H:MM:SS" | "MM:SS" | "SS" | "S";
 
 export type ModeType = "NOT_FOUND" | "AMRAP" | "TABATA" | "EMOM" | "FOR_TIME";
 
+export type ExerciseItem = {
+	type: "title" | "subtitle" | "exercise",
+	description: string,
+};
+
 export type ModeSettings = {
 	type: ModeType,
 	description: string,
@@ -41,6 +46,7 @@ export type RoundStepSettings = {
 export type ParsedRoundSettings = {
 	rounds: number,
 	roundSteps: ParsedRoundStepSettings[],
+	exercises: ExerciseItem[],
 };
 
 type ParsedRoundStepSettings = {
@@ -54,7 +60,7 @@ type ParsedRoundStepSettings = {
 };
 
 export type CustomParamSettings = { description: string } & CustomTypeParam;
-type CustomTypeParam = CustomNumberParam | CustomOptionsParam;
+type CustomTypeParam = CustomNumberParam | CustomOptionsParam | CustomTextParam;
 
 type CustomNumberParam = {
 	inputType: "number",
@@ -66,6 +72,11 @@ export type CustomOptionsParam<T extends string = string> = {
 	inputType: "options",
 	options: { value: T, label: string }[],
 	defaultValue: T,
+};
+
+type CustomTextParam = {
+	inputType: "text",
+	defaultValue: string,
 };
 
 export type CustomParamReplacement = `__${string}__`;

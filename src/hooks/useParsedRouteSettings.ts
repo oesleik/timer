@@ -1,4 +1,4 @@
-import { CustomParamReplacement, ModeSettings, ParsedRoundSettings, TimeFormat, ValidColorSchemes, ValidTimerDirections } from "../modes/types";
+import { CustomParamReplacement, ExerciseItem, ModeSettings, ParsedRoundSettings, TimeFormat, ValidColorSchemes, ValidTimerDirections } from "../modes/types";
 
 type FormData = Record<string, string>;
 
@@ -81,8 +81,20 @@ export const useParsedRouteSettings = (mode: ModeSettings, params: FormData): Pa
 				timeFormat: step.timeFormat || guessTimeFormat(duration),
 			};
 		}).filter(step => step.duration > 0),
+		exercises: parseExercisesParam(params.exercises || ""),
 	};
 };
+
+function parseExercisesParam(param: string): ExerciseItem[] {
+	if (param === "") return [];
+
+	return param.split("\n").map((line, idx): ExerciseItem => {
+		return {
+			type: idx === 0 ? "title" : (idx !== 1 || line === "" || /^\d/.test(line) ? "exercise" : "subtitle"),
+			description: line,
+		};
+	});
+}
 
 const guessTimeFormat = (duration: ParsedRoundSettings["roundSteps"][0]["duration"]): TimeFormat => {
 	if (typeof duration !== "number") {

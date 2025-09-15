@@ -16,7 +16,7 @@ export const ModeParamsForm = ({
 	const autoFocusOn = Object.entries(customParams).find(([, param]) => param.inputType !== "options")?.[0];
 
 	const [formData, setFormData] = useState<FormData>(() => {
-		const formData: FormData = {};
+		const formData: FormData = { exercises: "" };
 		Object.entries(customParams).forEach(([ref, param]) => {
 			formData[ref] = String(param.defaultValue || "");
 		});
@@ -53,6 +53,13 @@ export const ModeParamsForm = ({
 					setValue={(value: string) => setParamValue(ref, value)}
 				/>
 			))}
+
+			<CustomParamInput
+				param={{ inputType: "text", description: "Exercises", defaultValue: "" }}
+				value={formData.exercises}
+				setValue={(value: string) => setParamValue("exercises", value)}
+			/>
+
 			<button
 				type="button"
 				onClick={() => submitParams()}
@@ -105,6 +112,22 @@ const CustomParamInput = ({ param, value, setValue, autoFocus }: {
 					</label>
 				))}
 			</div>
+		</>;
+	}
+
+	if (param.inputType === "text") {
+		return <>
+			<label className="block text-echo-white-500 text-sm font-bold mb-2">
+				{param.description}
+			</label>
+			<textarea
+				rows={4}
+				value={value}
+				autoFocus={autoFocus}
+				onFocus={event => event.target.select()}
+				onChange={event => setValue(event.target.value)}
+				className="shadow appearance-none border rounded w-full py-2 px-3 mb-6 text-echo-white-500 leading-tight focus:outline-none focus:shadow-outline"
+			/>
 		</>;
 	}
 

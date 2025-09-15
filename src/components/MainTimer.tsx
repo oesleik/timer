@@ -1,10 +1,9 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSecondsTimer } from "../hooks/useSecondsTimer";
-import { ParsedRoundSettings, TimeFormat } from "../modes/types";
+import { ExerciseItem, ParsedRoundSettings, TimeFormat } from "../modes/types";
 import { MainTimerState } from "../hooks/useMainTimerState";
 import { useTimerSoundEffects } from "../hooks/useTimerSoundEffects";
-import { RoundedTimer } from "./TimerView/RoundedTimer";
-import { TimerViewProps } from "./TimerView/TimerViewType";
+import { TimerViewProps, useTimerViewComponent } from "../hooks/useTimerViewComponent";
 
 export const MainTimer = ({ roundSettings, mainTimerState, fullSize = false }: {
 	roundSettings: ParsedRoundSettings,
@@ -23,15 +22,16 @@ export const MainTimer = ({ roundSettings, mainTimerState, fullSize = false }: {
 				}
 
 				const stepId = mainTimerState.currentRound + "_" + currentStep;
-				return <StepTimer key={stepId} step={step} mainTimerState={mainTimerState} />;
+				return <StepTimer key={stepId} step={step} mainTimerState={mainTimerState} exercises={roundSettings.exercises} />;
 			})}
 		</div>
 	);
 };
 
-const StepTimer = ({ step, mainTimerState }: {
+const StepTimer = ({ step, mainTimerState, exercises }: {
 	step: ParsedRoundSettings["roundSteps"][0],
-	mainTimerState: MainTimerState
+	mainTimerState: MainTimerState,
+	exercises: ExerciseItem[],
 }) => {
 	const timer = useSecondsTimer({
 		maxDuration: step.duration,
@@ -45,7 +45,7 @@ const StepTimer = ({ step, mainTimerState }: {
 		if (timer.isFinished) mainTimerState.nextStep();
 	}, [timer.isFinished, mainTimerState.nextStep]);
 
-	const timerViewProps: TimerViewProps = {
+	const viewProps: TimerViewProps = {
 		description: step.description,
 		direction: step.direction,
 		formatedTime: formatTime(timer.time, step.timeFormat),
@@ -56,11 +56,11 @@ const StepTimer = ({ step, mainTimerState }: {
 		progress: timer.progress,
 		isFinished: mainTimerState.isFinished,
 		colorScheme: step.colorScheme,
+		exercises: exercises,
 	};
 
-	const TimerViewComponent: React.FC<TimerViewProps> = RoundedTimer;
-
-	return <TimerViewComponent {...timerViewProps} />;
+	const ViewComponent = useTimerViewComponent(viewProps);
+	return <ViewComponent {...viewProps} />;
 };
 
 const formatTime = (time: number, timeFormat: TimeFormat): string => {
