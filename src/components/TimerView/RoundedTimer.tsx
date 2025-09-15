@@ -15,7 +15,7 @@ export const RoundedTimer = ({
     const fontSizeVariationClass = formatedTime.length > 5 ? "time-with-hour-format" : "";
     const timerColorScheme = "timer-color-scheme-" + (isFinished ? "finished" : colorScheme.toLowerCase());
 
-    return <div className={`${timerColorScheme} relative timer-circle h-full`}>
+    return <div className={`${timerColorScheme} relative timer-circle h-full @container`}>
         <div className="absolute h-full w-full mx-auto pointer-events-none">
             <CircularProgress progress={progress} direction={direction} />
         </div>
@@ -32,7 +32,7 @@ export const RoundedTimer = ({
                         </div>
                     </div>
                 ) : (
-                    <div className="timer-step-description timer-step-description">
+                    <div className="timer-step-description">
                         {description}
                     </div>
                 )}

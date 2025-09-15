@@ -32,6 +32,11 @@ html, body, #root {
 	--color-echo-black-500: var(--base-color-echo-black);
 }
 
+.max-content-height {
+	/* 136px referente a elementos em cima e em baixo */
+	max-height: calc(100vh - 136px);
+}
+
 .timer-circle {
 	/* 136px referente a elementos em cima e em baixo */
 	height: min(calc(100vw - 30px), calc(100vh - 136px));
@@ -49,22 +54,27 @@ html, body, #root {
 
 .timer-round-number {
 	font-size: 1.8em;
+	font-size: 9.4cqw;
 }
 
 .timer-round-desc {
 	font-size: 0.8em;
+	font-size: 4.2cqw;
 }
 
 .timer-step-description {
 	font-size: 1.8em;
+	font-size: 9.4cqw;
 }
 
 .timer-clock {
 	font-size: 5.7em;
+	font-size: 29.7cqw;
 }
 
 .timer-clock.time-with-hour-format {
 	font-size: 5em;
+	font-size: 26.1cqw;
 }
 
 .text-15xl {

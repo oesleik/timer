@@ -2,21 +2,40 @@ import React from "react";
 import { TimerViewProps } from "../../hooks/useTimerViewComponent";
 import { ExerciseItem } from "../../modes/types";
 import { RoundedTimer } from "./RoundedTimer";
+import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "../Resizable";
+import { PanelGroupStorage } from "react-resizable-panels";
 
 type ExerciseFrag = {
     type: "reps" | "weight" | "description",
     content: string,
 };
 
+const memoryStorage: PanelGroupStorage & { items: Record<string, string> } = {
+    items: {},
+    getItem: (name: string): string | null => memoryStorage.items[name] || null,
+    setItem: (name: string, value: string): void => { memoryStorage.items[name] = value },
+};
+
 export const RoundedTimerWithExercises = (props: TimerViewProps) => {
-    return <div className="flex items-center h-full w-full justify-center">
-        <ul className="flex-[1_0_50%] resize-x">
-            {props.exercises.map((item, idx) => (
-                <ViewExerciseItem key={idx} item={item} />
-            ))}
-        </ul>
-        <RoundedTimer {...props} />
-    </div>;
+    return <ResizablePanelGroup direction="horizontal" autoSaveId="rounded-timer-with-exercises" storage={memoryStorage}>
+        <ResizablePanel>
+            <div className="grid place-items-center h-full overflow-y-auto overflow-x-hidden max-content-height">
+                <ul>
+                    {props.exercises.map((item, idx) => (
+                        <ViewExerciseItem key={idx} item={item} />
+                    ))}
+                </ul>
+            </div>
+        </ResizablePanel>
+
+        <ResizableHandle />
+
+        <ResizablePanel defaultSize={35}>
+            <div className="flex items-center h-full w-full justify-center">
+                <RoundedTimer {...props} />
+            </div>
+        </ResizablePanel>
+    </ResizablePanelGroup>;
 };
 
 function ViewExerciseItem({ item }: { item: ExerciseItem }) {

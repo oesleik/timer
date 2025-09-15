@@ -17,7 +17,7 @@ export const ModeSelectConfigPage = ({ modeSettings, ref }: { modeSettings: Mode
 			<h1 className="inline-block ml-5">{modeSettings.description}</h1>
 		</div>
 
-		<div className="text-2xl flex flex-col items-center justify-center h-full max-w-xl mx-auto">
+		<div className="text-2xl grid place-items-center h-full max-w-xl mx-auto">
 			<ModeParamsForm modeSettings={modeSettings} setCustomSettings={setCustomSettings} ref={ref} />
 		</div>
 	</div>;
