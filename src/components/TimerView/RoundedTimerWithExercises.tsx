@@ -49,7 +49,7 @@ function ViewExerciseItem({ item }: { item: ExerciseItem }) {
 
     const frags = parseExerciseItemString(item.description);
 
-    return <li className="text-7xl/16 tracking-wide py-3">
+    return <li className="text-7xl/16 tracking-wide py-3 min-h-[1em]">
         {frags.map((frag, idx) => {
             if (frag.type === "reps") {
                 return <span key={idx} className="text-echo-yellow-500">{frag.content}</span>;
@@ -71,7 +71,7 @@ function parseExerciseItemString(desc: string): ExerciseFrag[] {
     while (desc.length && limit > 0) {
         limit--;
 
-        if (/^[^a-zA-Z]+$/.test(desc)) {
+        if (/\d/.test(desc) && /\//.test(desc) && /^\s*[\(\d][^a-zA-Z]+$/.test(desc)) {
             frags.push({
                 type: "weight",
                 content: desc,
@@ -81,7 +81,7 @@ function parseExerciseItemString(desc: string): ExerciseFrag[] {
             continue;
         }
 
-        const repsRes = desc.match(/^\s*\d+(m|x)?\b\s*/);
+        const repsRes = desc.match(/^\s*\d+(m\b|x\b|'|")?\s*/);
 
         if (repsRes && repsRes[0]) {
             frags.push({
