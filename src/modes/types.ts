@@ -26,6 +26,7 @@ export type ModeSettings = {
 	description: string,
 	roundSettings: RoundSettings,
 	customParams?: Record<string, CustomParamSettings>,
+	exercises?: string,
 };
 
 type RoundSettings = {
@@ -60,7 +61,7 @@ type ParsedRoundStepSettings = {
 };
 
 export type CustomParamSettings = { description: string } & CustomTypeParam;
-type CustomTypeParam = CustomNumberParam | CustomOptionsParam | CustomTextParam;
+type CustomTypeParam = CustomNumberParam | CustomOptionsParam | CustomTextParam | CustomTextareaParam;
 
 type CustomNumberParam = {
 	inputType: "number",
@@ -76,6 +77,11 @@ export type CustomOptionsParam<T extends string = string> = {
 
 type CustomTextParam = {
 	inputType: "text",
+	defaultValue: string,
+};
+
+type CustomTextareaParam = {
+	inputType: "textarea",
 	defaultValue: string,
 };
 

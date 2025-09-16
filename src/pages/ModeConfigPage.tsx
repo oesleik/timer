@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import { ModeSettings, ModeType } from "../modes/types";
 import { ModeParamsForm } from "../components/ModeParamsForm";
 
-export const ModeSelectConfigPage = ({ modeSettings, ref }: { modeSettings: ModeSettings, ref: ModeType | string }) => {
+export const ModeConfigPage = ({ modeSettings, ref }: { modeSettings: ModeSettings, ref: ModeType | string }) => {
 	const navigate = useNavigate();
 
 	const setCustomSettings = (customSettings: Record<string, string>) => {
@@ -17,7 +17,7 @@ export const ModeSelectConfigPage = ({ modeSettings, ref }: { modeSettings: Mode
 			<h1 className="inline-block ml-5">{modeSettings.description}</h1>
 		</div>
 
-		<div className="text-2xl grid place-items-center h-full max-w-xl mx-auto">
+		<div className="text-2xl grid place-items-center h-full max-w-xl mx-auto w-full">
 			<ModeParamsForm modeSettings={modeSettings} setCustomSettings={setCustomSettings} ref={ref} />
 		</div>
 	</div>;

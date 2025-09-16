@@ -4,7 +4,7 @@ import { HashRouter, Route, Routes } from "react-router";
 import "./index.css"
 
 import { ModeSelectionRoute } from "./routes/ModeSelectionRoute.tsx";
-import { ModeSelectConfigRoute } from "./routes/ModeSelectConfigRoute.tsx";
+import { ModeConfigRoute } from "./routes/ModeConfigRoute.tsx";
 import { TimerControlRoute } from "./routes/TimerControlRoute.tsx";
 
 
@@ -14,7 +14,7 @@ createRoot(document.getElementById("root")!).render(
 			<Routes>
 				{/* Sender */}
 				<Route index element={<ModeSelectionRoute />} />
-				<Route path="/mode/:mode" element={<ModeSelectConfigRoute />} />
+				<Route path="/mode/:mode" element={<ModeConfigRoute />} />
 				<Route path="/timer/:mode" element={<TimerControlRoute />} />
 			</Routes>
 		</HashRouter>
