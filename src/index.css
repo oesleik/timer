@@ -24,6 +24,11 @@ html, body, #root {
 	height: 100%;
 }
 
+.custom-scrollbar, html, body, textarea {
+	scrollbar-width: thin;
+	scrollbar-color: #111 #333;
+}
+
 @theme {
 	--color-echo-yellow-500: var(--base-color-echo-yellow);
 	--color-echo-gray-500: var(--base-color-echo-gray);

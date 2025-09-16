@@ -19,7 +19,7 @@ const memoryStorage: PanelGroupStorage & { items: Record<string, string> } = {
 export const RoundedTimerWithExercises = (props: TimerViewProps) => {
     return <ResizablePanelGroup direction="horizontal" autoSaveId="rounded-timer-with-exercises" storage={memoryStorage}>
         <ResizablePanel>
-            <div className="grid place-items-center h-full overflow-y-auto overflow-x-hidden max-content-height">
+            <div className="grid place-items-center h-full overflow-y-auto overflow-x-hidden max-content-height custom-scrollbar">
                 <ul>
                     {props.exercises.map((item, idx) => (
                         <ViewExerciseItem key={idx} item={item} />
