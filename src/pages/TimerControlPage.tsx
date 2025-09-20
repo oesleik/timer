@@ -7,8 +7,9 @@ import { MainTimerState, useMainTimerState } from "../hooks/useMainTimerState";
 import { SoundVolumeState } from "../hooks/useSoundVolumeState";
 import { Slider } from "../components/Slider";
 import { useClickOutside } from "../hooks/useClickOutside";
-import { findNextTimerViewMode } from "../hooks/useTimerViewModeState";
-import { Volume2, VolumeOff } from "lucide-react";
+import { TIMER_VIEW_MODE } from "../hooks/useTimerViewModeState";
+import { SettingsIcon, Volume2, VolumeOff } from "lucide-react";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../components/DropdownMenu";
 
 export const TimerControlPage = ({ modeSettings, roundSettings }: {
 	modeSettings: ModeSettings,
@@ -95,10 +96,31 @@ const SoundStateActions = ({ volume, setVolume, persistCurrentVolume }: SoundVol
 	</div>;
 }
 
-const TimerViewActions = ({ viewMode, setViewMode, hasExercises }: MainTimerState) => {
-	if (!hasExercises) return <></>;
-	const nextViewMode = () => setViewMode(findNextTimerViewMode(viewMode, hasExercises));
-	return <Button onClick={() => nextViewMode()}>Change view</Button>;
+const TimerViewActions = ({ viewMode, setViewMode, viewOptions, setViewOptions, hasExercises }: MainTimerState) => {
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button><SettingsIcon /></Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent className="w-56">
+				<DropdownMenuRadioGroup value={viewMode} onValueChange={v => setViewMode(v as typeof viewMode)}>
+					{Object.entries(TIMER_VIEW_MODE).map(([value, desc]) => (
+						<DropdownMenuRadioItem key={value} value={value} disabled={!hasExercises && value != "ONLY_TIMER"}>{desc}</DropdownMenuRadioItem>
+					))}
+				</DropdownMenuRadioGroup>
+
+				<DropdownMenuSeparator />
+
+				<DropdownMenuCheckboxItem checked={viewOptions.showTitle} onCheckedChange={ckd => setViewOptions({ showTitle: ckd })}>
+					Show title
+				</DropdownMenuCheckboxItem>
+
+				<DropdownMenuCheckboxItem checked={viewOptions.showWeights} onCheckedChange={ckd => setViewOptions({ showWeights: ckd })}>
+					Show weights
+				</DropdownMenuCheckboxItem>
+			</DropdownMenuContent >
+		</DropdownMenu >
+	);
 }
 
 const SoundToggleButton = forwardRef<HTMLButtonElement, { isMuted: boolean, active: boolean, onClick: () => void }>(({ isMuted, active, onClick }, ref) => {

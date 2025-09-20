@@ -1,15 +1,22 @@
 import { useState } from "react";
 import { ParsedRoundSettings } from "../modes/types";
 
-const TIMER_VIEW_MODE = {
-	ONLY_EXERCISES: "Only exercises",
+export const TIMER_VIEW_MODE = {
 	TIMER_WITH_EXERCISES: "Timer with exercises",
+	ONLY_EXERCISES: "Only exercises",
 	ONLY_TIMER: "Only timer",
 } as const;
+
+type TimerViewOptions = {
+	showTitle: boolean,
+	showWeights: boolean,
+};
 
 export type TimerViewModeState = {
 	viewMode: keyof typeof TIMER_VIEW_MODE,
 	setViewMode: (mode: keyof typeof TIMER_VIEW_MODE) => void,
+	viewOptions: TimerViewOptions,
+	setViewOptions: (options: Partial<TimerViewOptions>) => void,
 }
 
 export const useTimerViewModeState = (roundSettings: ParsedRoundSettings): TimerViewModeState => {
@@ -17,34 +24,15 @@ export const useTimerViewModeState = (roundSettings: ParsedRoundSettings): Timer
 		roundSettings.exercises.length ? "ONLY_EXERCISES" : "ONLY_TIMER"
 	);
 
+	const [viewOptions, setViewOptions] = useState<TimerViewOptions>({
+		showTitle: true,
+		showWeights: true,
+	});
+
 	return {
 		viewMode: viewMode,
 		setViewMode: (viewMode) => setViewMode(viewMode),
+		viewOptions: viewOptions,
+		setViewOptions: (newOptions) => setViewOptions(curOptions => ({ ...curOptions, ...newOptions })),
 	};
-};
-
-export const findNextTimerViewMode = (currentViewMode: keyof typeof TIMER_VIEW_MODE, hasExercises: boolean): keyof typeof TIMER_VIEW_MODE => {
-	let nextViewMode: typeof currentViewMode | null = null;
-	let foundViewMode = false;
-
-	if (!hasExercises) {
-		// todo improve no exersices view handling
-		return "ONLY_TIMER";
-	}
-
-	for (nextViewMode of Object.keys(TIMER_VIEW_MODE) as typeof currentViewMode[]) {
-		if (foundViewMode) {
-			break;
-		}
-
-		if (nextViewMode == currentViewMode) {
-			foundViewMode = true;
-		}
-	}
-
-	if (!nextViewMode || !foundViewMode || nextViewMode == currentViewMode) {
-		return (Object.keys(TIMER_VIEW_MODE) as typeof currentViewMode[])[0];
-	}
-
-	return nextViewMode;
 };
