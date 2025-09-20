@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import { TimerRunningState, useTimerRunningState } from "./useSecondsTimer";
 import { ParsedRoundSettings } from "../modes/types";
 import { SoundVolumeState, useSoundVolumeState } from "./useSoundVolumeState";
+import { TimerViewModeState, useTimerViewModeState } from "./useTimerViewModeState";
 
 export type MainTimerState = {
 	isStarted: boolean,
@@ -9,7 +10,8 @@ export type MainTimerState = {
 	maxRounds: number,
 	nextStep: () => void,
 	reset: () => void,
-} & RoundsState & TimerRunningState & SoundVolumeState;
+	hasExercises: boolean,
+} & RoundsState & TimerRunningState & SoundVolumeState & TimerViewModeState;
 
 type RoundsState = {
 	executionUid: number,
@@ -37,6 +39,7 @@ export const useMainTimerState = (roundSettings: ParsedRoundSettings): MainTimer
 
 	const timerRunningState = useTimerRunningState();
 	const soundVolumeState = useSoundVolumeState();
+	const timerViewModeState = useTimerViewModeState(roundSettings);
 	const runningUidRef = useRef(0);
 
 	const resume = () => {
@@ -92,9 +95,11 @@ export const useMainTimerState = (roundSettings: ParsedRoundSettings): MainTimer
 	}, [roundSettings]);
 
 	return {
+		...timerViewModeState,
 		...soundVolumeState,
 		...timerRunningState,
 		...roundsState,
+		hasExercises: roundSettings.exercises.length > 0,
 		isStarted: runningUidRef.current === roundsState.executionUid,
 		showRounds: roundSettings.rounds > 0,
 		maxRounds: roundSettings.rounds,

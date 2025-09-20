@@ -7,6 +7,7 @@ import { MainTimerState, useMainTimerState } from "../hooks/useMainTimerState";
 import { SoundVolumeState } from "../hooks/useSoundVolumeState";
 import { Slider } from "../components/Slider";
 import { useClickOutside } from "../hooks/useClickOutside";
+import { findNextTimerViewMode } from "../hooks/useTimerViewModeState";
 
 export const TimerControlPage = ({ modeSettings, roundSettings }: {
 	modeSettings: ModeSettings,
@@ -53,6 +54,7 @@ const TimerActions = (props: MainTimerState) => {
 		<div className="flex gap-2.5">
 			<TimerStateActions {...props} />
 			<SoundStateActions {...props} />
+			<TimerViewActions {...props} />
 		</div>
 	);
 }
@@ -90,6 +92,12 @@ const SoundStateActions = ({ volume, setVolume, persistCurrentVolume }: SoundVol
 			</div>
 		)}
 	</div>;
+}
+
+const TimerViewActions = ({ viewMode, setViewMode, hasExercises }: MainTimerState) => {
+	if (!hasExercises) return <></>;
+	const nextViewMode = () => setViewMode(findNextTimerViewMode(viewMode, hasExercises));
+	return <Button onClick={() => nextViewMode()}>Change view</Button>;
 }
 
 const SoundToggleButton = forwardRef<HTMLButtonElement, { isMuted: boolean, active: boolean, onClick: () => void }>(({ isMuted, active, onClick }, ref) => {

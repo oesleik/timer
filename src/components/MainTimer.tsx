@@ -3,7 +3,7 @@ import { useSecondsTimer } from "../hooks/useSecondsTimer";
 import { ExerciseItem, ParsedRoundSettings, TimeFormat } from "../modes/types";
 import { MainTimerState } from "../hooks/useMainTimerState";
 import { useTimerSoundEffects } from "../hooks/useTimerSoundEffects";
-import { TimerViewProps, useTimerViewComponent } from "../hooks/useTimerViewComponent";
+import { TimerViewProps, TimerViewComponent } from "./TimerView/TimerViewComponent";
 
 export const MainTimer = ({ roundSettings, mainTimerState, fullSize = false }: {
 	roundSettings: ParsedRoundSettings,
@@ -13,7 +13,7 @@ export const MainTimer = ({ roundSettings, mainTimerState, fullSize = false }: {
 	const className = fullSize ? "full-size-timer" : "";
 
 	return (
-		<div className={`flex flex-col items-center h-full justify-center ${className}`}>
+		<div className={`flex flex-col items-center h-full w-full justify-center ${className}`}>
 			{roundSettings.roundSteps.map((step, stepIdx) => {
 				const currentStep = stepIdx + 1;
 
@@ -57,10 +57,10 @@ const StepTimer = ({ step, mainTimerState, exercises }: {
 		isFinished: mainTimerState.isFinished,
 		colorScheme: step.colorScheme,
 		exercises: exercises,
+		viewModeState: mainTimerState,
 	};
 
-	const ViewComponent = useTimerViewComponent(viewProps);
-	return <ViewComponent {...viewProps} />;
+	return <TimerViewComponent {...viewProps} />;
 };
 
 const formatTime = (time: number, timeFormat: TimeFormat): string => {

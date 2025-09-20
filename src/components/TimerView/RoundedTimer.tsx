@@ -1,4 +1,4 @@
-import { TimerViewProps } from "../../hooks/useTimerViewComponent";
+import { TimerViewProps } from "./TimerViewComponent";
 import { CircularProgress } from "../../pages/CircularProgress";
 
 export const RoundedTimer = ({

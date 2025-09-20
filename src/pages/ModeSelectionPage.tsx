@@ -8,7 +8,7 @@ export const ModeSelectionPage = () => {
 
 	return <>
 		<div className="text-2xl grid place-items-center h-screen py-5 px-5 max-w-xl mx-auto">
-			<div className="flex flex-col w-full gap-3">
+			<div className="flex flex-col w-full gap-3 pb-4">
 				{getAvailableModes().map(mode => (
 					<div className="flex w-full" key={mode.ref}>
 						<Link
