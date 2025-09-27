@@ -37,6 +37,7 @@ test("Parse exercise item", () => {
 	assertParseExercise("single leg squat to box - {{12}} ({{6}} each side)");
 	assertParseExercise("single leg squat to box (lower) - {{12}} ({{6}} each side)");
 	assertParseExercise("pistol squat - practice");
+	assertParseExercise("EMOM {{12'}}/{{50\"}}:");
 });
 
 function assertParseExercise(expected: string, input?: string): void {

@@ -97,6 +97,8 @@ const SoundStateActions = ({ volume, setVolume, persistCurrentVolume }: SoundVol
 }
 
 const TimerViewActions = ({ viewMode, setViewMode, viewOptions, setViewOptions, hasExercises }: MainTimerState) => {
+	const keepOpen: React.ComponentProps<typeof DropdownMenuCheckboxItem>["onSelect"] = (event) => event.preventDefault();
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -105,17 +107,17 @@ const TimerViewActions = ({ viewMode, setViewMode, viewOptions, setViewOptions, 
 			<DropdownMenuContent className="w-56">
 				<DropdownMenuRadioGroup value={viewMode} onValueChange={v => setViewMode(v as typeof viewMode)}>
 					{Object.entries(TIMER_VIEW_MODE).map(([value, desc]) => (
-						<DropdownMenuRadioItem key={value} value={value} disabled={!hasExercises && value != "ONLY_TIMER"}>{desc}</DropdownMenuRadioItem>
+						<DropdownMenuRadioItem key={value} value={value} onSelect={keepOpen} disabled={!hasExercises && value != "ONLY_TIMER"}>{desc}</DropdownMenuRadioItem>
 					))}
 				</DropdownMenuRadioGroup>
 
 				<DropdownMenuSeparator />
 
-				<DropdownMenuCheckboxItem checked={viewOptions.showTitle} onCheckedChange={ckd => setViewOptions({ showTitle: ckd })}>
+				<DropdownMenuCheckboxItem checked={viewOptions.showTitle} onSelect={keepOpen} onCheckedChange={ckd => setViewOptions({ showTitle: ckd })}>
 					Show title
 				</DropdownMenuCheckboxItem>
 
-				<DropdownMenuCheckboxItem checked={viewOptions.showWeights} onCheckedChange={ckd => setViewOptions({ showWeights: ckd })}>
+				<DropdownMenuCheckboxItem checked={viewOptions.showWeights} onSelect={keepOpen} onCheckedChange={ckd => setViewOptions({ showWeights: ckd })}>
 					Show weights
 				</DropdownMenuCheckboxItem>
 			</DropdownMenuContent >

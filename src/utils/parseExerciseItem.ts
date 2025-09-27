@@ -10,7 +10,7 @@ export function parseExerciseItemString(desc: string): ExerciseFrag[] {
 	while (desc.length && limit > 0) {
 		limit--;
 
-		if (/\d/.test(desc) && /\//.test(desc) && /^\s*[\(\d][^a-zA-Z]+$/.test(desc)) {
+		if (/\d/.test(desc) && /\//.test(desc) && /^\s*[\(\d][^a-zA-Z:]+$/.test(desc)) {
 			frags.push({
 				type: "weight",
 				content: desc,

@@ -90,7 +90,7 @@ function parseExercisesParam(param: string): ExerciseItem[] {
 
 	return param.split("\n").map((line, idx): ExerciseItem => {
 		return {
-			type: idx === 0 ? "title" : (idx !== 1 || line === "" || /^\d/.test(line) ? "exercise" : "subtitle"),
+			type: idx === 0 && !/\d/.test(line) ? "title" : "exercise",
 			description: line,
 		};
 	});

@@ -21,7 +21,7 @@ export type TimerViewModeState = {
 
 export const useTimerViewModeState = (roundSettings: ParsedRoundSettings): TimerViewModeState => {
 	const [viewMode, setViewMode] = useState<TimerViewModeState["viewMode"]>(
-		roundSettings.exercises.length ? "ONLY_EXERCISES" : "ONLY_TIMER"
+		roundSettings.exercises.length ? "TIMER_WITH_EXERCISES" : "ONLY_TIMER"
 	);
 
 	const [viewOptions, setViewOptions] = useState<TimerViewOptions>({
