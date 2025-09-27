@@ -9,7 +9,7 @@ import { Slider } from "../components/Slider";
 import { useClickOutside } from "../hooks/useClickOutside";
 import { TIMER_VIEW_MODE } from "../hooks/useTimerViewModeState";
 import { SettingsIcon, Volume2, VolumeOff } from "lucide-react";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../components/DropdownMenu";
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../components/DropdownMenu";
 
 export const TimerControlPage = ({ modeSettings, roundSettings }: {
 	modeSettings: ModeSettings,

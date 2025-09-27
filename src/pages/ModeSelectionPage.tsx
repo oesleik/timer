@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { getAvailableModes } from "../hooks/useModeSettings";
 import { CustomRef, isCustomRef, removeCustomSettingsFromStorage } from "../hooks/useCustomModeSettings";
 import { useState } from "react";
-import { Trash2Icon, TrashIcon } from "lucide-react";
+import { Trash2Icon } from "lucide-react";
 
 export const ModeSelectionPage = () => {
 	const [_, forceUpdate] = useState(0);
